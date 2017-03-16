@@ -1,3 +1,4 @@
-optimize(1);
-throughput_index(1);
+priority = prior();
+[users, partition] = optimize(users, partition, priority(1));
+[users, th] = throughput_avg(users);
 load data.mat;

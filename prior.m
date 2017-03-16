@@ -1,4 +1,4 @@
-function [  ] = prior( users )
+function [ priority ] = prior( )
 % rank the priority of the given users according to their throughput
 load data.mat;
 temp_prior = zeros(lambda,1); % tempororily record 

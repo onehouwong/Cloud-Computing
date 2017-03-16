@@ -1,4 +1,4 @@
-function [ throughput ] = throughput_avg(  )
+function [ throughput, users ] = throughput_avg( users )
 % This function is to calculate the average throughput of all users
 load data.mat;
 len = size(users, 2); % the number of users
@@ -10,6 +10,12 @@ for i=1:len % for each user
     for n=1:V+2 % go through all modules
         if partition(i, n) == 0 % module n is executed on mobile
            th = users(i).CI(n)*users(i).theta; % calculate module computation cost
+           if th > max_module_th % update maximum
+               max_module_th = th;
+               max_n = n;
+           end
+        else % the module n is executed on server
+           th = server_cost(partition(i, n))*servers(partition(i, n)); % calculate server computation cost
            if th > max_module_th % update maximum
                max_module_th = th;
                max_n = n;
@@ -47,7 +53,7 @@ for i=1:len % for each user
     end
     
     if sum_data / bandwidth_user(i) > max_module_th  % finally, update the maximum module/edge and calculate the throughput
-        users(i).max_edge = [u,v]; % record the bottleneck edge
+        users(i).max_edge = [max_u,max_v]; % record the bottleneck edge
         users(i).max_module = NaN; % as the bottleneck is on the edge, we eliminate the bottleneck module record
         users(i).throughput = sum_data / bandwidth_user(i);
     else
@@ -59,6 +65,7 @@ for i=1:len % for each user
     sum_throughput = users(i).throughput + sum_throughput;
 end
     throughput = sum_throughput / len;
+    fprintf('avg_throughput: %f\n', throughput);
     clear sum_throughput; clear sum_data;
     clear max_module_th; clear max_edge_data;
     clear max_u; clear max_v; clear max_n; clear len;

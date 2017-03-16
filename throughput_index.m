@@ -1,4 +1,4 @@
-function [  ] = throughput_index(index)
+function [ users ] = throughput_index(users, index)
 load data.mat;
 % This function is to calculate throughput and bottleneck of users(index)
 
@@ -6,6 +6,12 @@ load data.mat;
     for n=1:V+2 % go through all modules
         if partition(index, n) == 0 % module n is executed on mobile
            th = users(index).CI(n)*users(index).theta; % calculate module computation cost
+           if th > max_module_th % update maximum
+               max_module_th = th;
+               max_n = n;
+           end
+        else % the module n is executed on server
+           th = server_cost(partition(index, n))*servers(partition(index, n)); % calculate server computation cost
            if th > max_module_th % update maximum
                max_module_th = th;
                max_n = n;

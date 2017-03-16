@@ -53,15 +53,15 @@ Dag(2:V+1, 2:V+1) = CDag;
 nEdge = nEdge + length(posmin) + length(posmax);
 
 % Out put of DAGGen is CI, CIJ, Coo, Cvv 
-Coo = 8*AvgCij;  % The communication cost of the start node
-Cvv = 8*AvgCij;  % The communication cost of the end node
+Coo = 8*AvgCij*bandwidth_total/lambda;  % The amount of data of the start node
+Cvv = 8*AvgCij*bandwidth_total/lambda;  % The amount of data of the end node
 dtest2 = 2*AvgCij*rand(nEdge, 1);
-CIJ = zeros(V+2, V+2);
+CIJ = zeros(V+2, V+2); % The amount of data of edges
 index = 1;
 for i = 1:V+2
     for j = 1:V+2
         if Dag(i,j)>0
-            CIJ(i,j) = dtest2(index);
+            CIJ(i,j) = dtest2(index)*bandwidth_total/lambda;
             index = index +1;
         end       
     end
@@ -83,7 +83,7 @@ partition = zeros(lambda, V+2); % initialize the partition strategy of users
 priority = zeros(lambda, 1); % priority list of users, recorded by user's index
 save data.mat;
 throughput_avg(); % initialize the bottleneck and throughput record
-prior(users); % initialize the priority
+prior(); % initialize the priority
 load data.mat;
 
 
