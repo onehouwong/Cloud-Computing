@@ -76,14 +76,14 @@ for num=1:lambda
     users(num).max_module = NaN; % record the bottleneck of modules
     users(num).throughput = 0; % record the throughput of the user
     %users(num).bandwidth_edge = rand(V+2,V+2); % for test
+    users(num).best_tag = 0; % a tag that indicate that the user has been optimized to the best partitioning
 end
 
 %partition = floor(rand(lambda, users(1).V+2)*(k+1)); % for test
 partition = zeros(lambda, V+2); % initialize the partition strategy of users
 priority = zeros(lambda, 1); % priority list of users, recorded by user's index
 save data.mat;
-throughput_avg(); % initialize the bottleneck and throughput record
-prior(); % initialize the priority
+[th_avg, users] = throughput_avg(); % initialize the bottleneck and throughput record
 load data.mat;
 
 

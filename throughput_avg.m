@@ -65,7 +65,6 @@ for i=1:len % for each user
     sum_throughput = users(i).throughput + sum_throughput;
 end
     throughput = sum_throughput / len;
-    fprintf('avg_throughput: %f\n', throughput);
     clear sum_throughput; clear sum_data;
     clear max_module_th; clear max_edge_data;
     clear max_u; clear max_v; clear max_n; clear len;

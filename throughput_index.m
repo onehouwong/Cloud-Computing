@@ -58,7 +58,6 @@ load data.mat;
         users(index).throughput = max_module_th;
     end
     
-    users(index).throughput
     clear sum_data;
     clear max_module_th; clear max_edge_data;
     clear max_u; clear max_v; clear max_n;
