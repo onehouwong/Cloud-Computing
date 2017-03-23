@@ -75,6 +75,7 @@ for num=1:lambda
     users(num).max_edge = NaN; % record the bottleneck of edges
     users(num).max_module = NaN; % record the bottleneck of modules
     users(num).throughput = 0; % record the throughput of the user
+    users(num).data = 0; % record the total amount of data of edges
     %users(num).bandwidth_edge = rand(V+2,V+2); % for test
     users(num).best_tag = 0; % a tag that indicate that the user has been optimized to the best partitioning
 end

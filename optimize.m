@@ -41,10 +41,14 @@ else % optimize edge
 
     if (max_edge(1) == 0 || max_edge(1) == 33)    
     % we should consider the start and end node, they can not be offloaded
-        fprintf('Module %d can not be offloaded, user %d is optimized.', max_edge(1), index);
+        fprintf('Module %d can not be offloaded, user %d is optimized.\n', max_edge(1), index);
+        users(index).best_tag = 1;
+        save data.mat;
         return;
     elseif (max_edge(2) == 0 || max_edge(2) == 33)
-        fprintf('Module %d can not be offloaded, user %d is optimized.', max_edge(2), index);
+        fprintf('Module %d can not be offloaded, user %d is optimized.\n', max_edge(2), index);
+        users(index).best_tag = 1;
+        save data.mat;
         return;
     elseif partition(index, max_edge(1)) ~= 0 % x and w are not the start or end node
         w = max_edge(1); x = max_edge(2);
@@ -78,7 +82,7 @@ else % optimize edge
             fprintf('Offload module %d of user %d to server %d \n', x, index, server);
 %          end
      else % recover from the optimization, set the best tag to 1 to prevent modification
-         fprintf('Try to offload module %d of user %d to server %d \n', max_module, index, server);
+         fprintf('Try to offload module %d of user %d to server %d \n', x, index, server);
          fprintf('Optimized throughput=%f, original throughput=%f, User %d has been optimized.\n', th_avg, temp_th, index);
          partition(index, x) = 0;
          servers(server) = servers(server) - 1;
@@ -88,7 +92,7 @@ else % optimize edge
      end
     
 end
-    fprintf('avg_throughput: %f\n', th_avg);
+    fprintf('avg_throughput: %f\n\n', th_avg);
     save data.mat;
     %th = users(index).CI(n)*users(index).theta
     % find the related module that is influenced by the optimization, as
