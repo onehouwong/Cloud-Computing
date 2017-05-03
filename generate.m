@@ -1,15 +1,14 @@
 % To generate the DAG of n users, the server condition and bandwidth
 
 V = 30; % Actual node number is V+2
-lambda = 5; % number of users
+lambda = 32; % number of users
 k = ceil(lambda/2); % the number of servers
-alpha = V; % the maximum module number that a server can hold
+alpha_server = 8; % the maximum module number that a server can hold 
 bandwidth_total = rand(1)*lambda; % the total bandwidth
-bandwidth_user = ones(lambda, 1)*(bandwidth_total/lambda); % the allocation of bandwidth to all users
-servers = zeros(k, 1);
+bandwidth_user = bandwidth_total/lambda; % the allocation of bandwidth to all users
 Unit = 1; % second
 AvgCi = 1*Unit;
-server_cost = 0.2*AvgCi*rand(k, 1); % the computation cost on server, which is 1/10 smaller than on mobile
+server_cost = 0.2*AvgCi*rand(1,1); % the computation cost on server, which is 1/10 smaller than on mobile
 
 Dout = 2;
 Alpha = 2;
@@ -66,7 +65,8 @@ for i = 1:V+2
         end       
     end
 end
-
+save data.mat;
+servers = zeros(k, 1);
 % initialize all the users with the same graph
 for num=1:lambda
     users(num).CI = 2*AvgCi*rand(V+2, 1); % only the computation cost of each user is different
@@ -82,10 +82,9 @@ end
 
 %partition = floor(rand(lambda, users(1).V+2)*(k+1)); % for test
 partition = zeros(lambda, V+2); % initialize the partition strategy of users
-priority = zeros(lambda, 1); % priority list of users, recorded by user's index
-save data.mat;
-[th_avg, users] = throughput_avg(); % initialize the bottleneck and throughput record
-load data.mat;
+% priority = zeros(lambda, 1); % priority list of users, recorded by user's index
+
+[th_avg, users] = throughput_avg(users, partition); % initialize the bottleneck and throughput record
 
 
 

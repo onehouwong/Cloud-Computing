@@ -39,6 +39,7 @@ else % optimize edge
     % deploying at local devices
     % let x be to module to be offloaded, and w be the other module
 
+    fprintf('Bottleneck:(%d, %d) \n', max_edge(1), max_edge(2));
     if (max_edge(1) == 0 || max_edge(1) == 33)    
     % we should consider the start and end node, they can not be offloaded
         fprintf('Module %d can not be offloaded, user %d is optimized.\n', max_edge(1), index);
@@ -56,7 +57,7 @@ else % optimize edge
         x = max_edge(1); w = max_edge(2);
     end
     
-    fprintf('Bottleneck:(%d, %d) \n', x, w);
+    
     
     % try to offload the module
 %     if x == 0 || x == 33

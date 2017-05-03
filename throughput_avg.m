@@ -1,4 +1,4 @@
-function [ throughput, users ] = throughput_avg( users )
+function [ throughput, users ] = throughput_avg( users, partition, servers )
 % This function is to calculate the average throughput of all users
 load data.mat;
 len = size(users, 2); % the number of users
@@ -15,7 +15,7 @@ for i=1:len % for each user
                max_n = n;
            end
         else % the module n is executed on server
-           th = server_cost(partition(i, n))*servers(partition(i, n)); % calculate server computation cost
+           th = server_cost*servers(partition(i, n)); % calculate server computation cost
            if th > max_module_th % update maximum
                max_module_th = th;
                max_n = n;
@@ -31,6 +31,7 @@ for i=1:len % for each user
             if Dag(u,v) && xor(partition(i,u), partition(i,v)) % module u and v are executed on different sides
                 sum_data = sum_data + CIJ(u,v);
                 if CIJ(u, v) > max_edge_data % record the edge that needs the maximum data
+                    max_edge_data = CIJ(u,v);
                     max_u = u; max_v = v;
                 end
             end
@@ -53,10 +54,10 @@ for i=1:len % for each user
     end
     
     users(i).data = sum_data;
-    if sum_data / bandwidth_user(i) > max_module_th  % finally, update the maximum module/edge and calculate the throughput
+    if sum_data / bandwidth_user > max_module_th  % finally, update the maximum module/edge and calculate the throughput
         users(i).max_edge = [max_u,max_v]; % record the bottleneck edge
         users(i).max_module = NaN; % as the bottleneck is on the edge, we eliminate the bottleneck module record
-        users(i).throughput = sum_data / bandwidth_user(i);
+        users(i).throughput = sum_data / bandwidth_user;
     else
         users(i).max_module = max_n;
         users(i).max_edge = NaN;
@@ -69,6 +70,5 @@ end
     clear sum_throughput; clear sum_data;
     clear max_module_th; clear max_edge_data;
     clear max_u; clear max_v; clear max_n; clear len;
-    save data.mat;
 end
 
