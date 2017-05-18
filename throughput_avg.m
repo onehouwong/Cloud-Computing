@@ -1,6 +1,11 @@
-function [ throughput, users ] = throughput_avg( users, partition, servers )
-% This function is to calculate the average throughput of all users
+function [ group ] = throughput_avg( group )
+% This function is to calculate the average throughput of all users within
+% a group
 load data.mat;
+users = group.users;
+partition = group.partition;
+servers = group.servers;
+bandwidth = group.bandwidth;
 len = size(users, 2); % the number of users
 sum_throughput = 0; % the sum of throughput
 
@@ -54,10 +59,10 @@ for i=1:len % for each user
     end
     
     users(i).data = sum_data;
-    if sum_data / bandwidth_user > max_module_th  % finally, update the maximum module/edge and calculate the throughput
+    if sum_data / bandwidth(i) > max_module_th  % finally, update the maximum module/edge and calculate the throughput
         users(i).max_edge = [max_u,max_v]; % record the bottleneck edge
         users(i).max_module = NaN; % as the bottleneck is on the edge, we eliminate the bottleneck module record
-        users(i).throughput = sum_data / bandwidth_user;
+        users(i).throughput = sum_data / bandwidth(i);
     else
         users(i).max_module = max_n;
         users(i).max_edge = NaN;
@@ -67,8 +72,7 @@ for i=1:len % for each user
     sum_throughput = users(i).throughput + sum_throughput;
 end
     throughput = sum_throughput / len;
-    clear sum_throughput; clear sum_data;
-    clear max_module_th; clear max_edge_data;
-    clear max_u; clear max_v; clear max_n; clear len;
+    group.users = users;
+    group.throughput = throughput;
 end
 

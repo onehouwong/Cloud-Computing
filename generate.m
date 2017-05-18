@@ -1,7 +1,7 @@
 % To generate the DAG of n users, the server condition and bandwidth
 
 V = 30; % Actual node number is V+2
-lambda = 32; % number of users
+lambda = 26; % number of users
 k = ceil(lambda/2); % the number of servers
 alpha_server = 8; % the maximum module number that a server can hold 
 bandwidth_total = rand(1)*lambda; % the total bandwidth
@@ -65,7 +65,7 @@ for i = 1:V+2
         end       
     end
 end
-save data.mat;
+save data.mat; % store some common features of the data flow graph
 servers = zeros(k, 1);
 % initialize all the users with the same graph
 for num=1:lambda
@@ -77,14 +77,12 @@ for num=1:lambda
     users(num).throughput = 0; % record the throughput of the user
     users(num).data = 0; % record the total amount of data of edges
     %users(num).bandwidth_edge = rand(V+2,V+2); % for test
-    users(num).best_tag = 0; % a tag that indicate that the user has been optimized to the best partitioning
+    %users(num).best_tag = 0; % a tag that indicate that the user has been optimized to the best partitioning
 end
 
 %partition = floor(rand(lambda, users(1).V+2)*(k+1)); % for test
-partition = zeros(lambda, V+2); % initialize the partition strategy of users
+% partition = zeros(lambda, V+2); % initialize the partition strategy of users
 % priority = zeros(lambda, 1); % priority list of users, recorded by user's index
-
-[th_avg, users] = throughput_avg(users, partition); % initialize the bottleneck and throughput record
 
 
 
