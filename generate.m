@@ -1,12 +1,12 @@
 % To generate the DAG of n users, the server condition and bandwidth
 
-V = 30; % Actual node number is V+2
-lambda = 26; % number of users
+V = 6; % Actual node number is V+2
+lambda = 53; % number of users
 k = ceil(lambda/2); % the number of servers
-alpha_server = 8; % the maximum module number that a server can hold 
+alpha_server = 4; % the maximum module number that a server can hold 
 bandwidth_total = rand(1)*lambda; % the total bandwidth
 bandwidth_user = bandwidth_total/lambda; % the allocation of bandwidth to all users
-Unit = 1; % second
+Unit = 0.01; % second
 AvgCi = 1*Unit;
 server_cost = 0.2*AvgCi*rand(1,1); % the computation cost on server, which is 1/10 smaller than on mobile
 
@@ -16,7 +16,8 @@ depth = Alpha*sqrt(V);
 prob = 2*Dout/V;
 CDag = zeros(V, V);
 Dag = zeros(V+2,V+2);
-CCR = 2; 
+%CCR = 2; 
+CCR = 3;
 AvgCij = CCR*Unit;
 %%Create the child DAG topology randomly
 nEdge = 0;
@@ -81,7 +82,7 @@ for num=1:lambda
 end
 
 %partition = floor(rand(lambda, users(1).V+2)*(k+1)); % for test
-% partition = zeros(lambda, V+2); % initialize the partition strategy of users
+partition = zeros(lambda, V+2); % initialize the partition strategy of users
 % priority = zeros(lambda, 1); % priority list of users, recorded by user's index
 
 

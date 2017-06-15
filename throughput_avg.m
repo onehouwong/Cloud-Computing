@@ -62,11 +62,11 @@ for i=1:len % for each user
     if sum_data / bandwidth(i) > max_module_th  % finally, update the maximum module/edge and calculate the throughput
         users(i).max_edge = [max_u,max_v]; % record the bottleneck edge
         users(i).max_module = NaN; % as the bottleneck is on the edge, we eliminate the bottleneck module record
-        users(i).throughput = sum_data / bandwidth(i);
+        users(i).throughput = 1/(sum_data / bandwidth(i));
     else
         users(i).max_module = max_n;
         users(i).max_edge = NaN;
-        users(i).throughput = max_module_th;
+        users(i).throughput = 1/max_module_th;
     end
     
     sum_throughput = users(i).throughput + sum_throughput;
