@@ -16,8 +16,7 @@ depth = Alpha*sqrt(V);
 prob = 2*Dout/V;
 CDag = zeros(V, V);
 Dag = zeros(V+2,V+2);
-%CCR = 2; 
-CCR = 3;
+CCR = 2;
 AvgCij = CCR*Unit;
 %%Create the child DAG topology randomly
 nEdge = 0;
